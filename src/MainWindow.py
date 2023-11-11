@@ -42,11 +42,11 @@ class MainWindow(QMainWindow):
         profile_action = QAction('GitHub &Profile', self)
         profile_action.triggered.connect(self.open_profile)
 
-        # Create the 'GitHub Repository' menu item
+        # Create the 'GitHub Repository' menu item and connect it to the 'open_repository' method
         repo_action = QAction('GitHub &Repository', self)
         repo_action.triggered.connect(self.open_repository)
 
-        # Add the actions to the menu bar (path)
+        # Add the actions to the menu bar
         settings.addAction(self.menu_path)
         info.addAction(profile_action)
         info.addAction(repo_action)
@@ -62,6 +62,7 @@ class MainWindow(QMainWindow):
         self.url.setPlaceholderText("Enter the URL to download")
         self.url.setObjectName("url")
 
+        # Define the download buttons
         self.download_mp4 = QPushButton("Download as MP4")
         self.download_mp4.setObjectName("downloadVideo")
         self.download_mp4.clicked.connect(self.download_video)
@@ -74,17 +75,21 @@ class MainWindow(QMainWindow):
         self.download_wav.setObjectName("downloadWav")
         self.download_wav.clicked.connect(self.download_as_wav)
 
+        # Define the path label
         self.defined_path = QLabel("")
         self.defined_path.setStyleSheet("font-family: Spendthrift;")
         self.label_path()
 
+        # Define the download status label
         self.download_status = QLabel("")
         self.download_status.setStyleSheet("font-family: Spendthrift;")
 
+        # Define the image label and the image to display
         self.image_label = QLabel()
         self.pixmap = QPixmap("../resources/logo.png")
         self.pixmap = self.pixmap.scaled(400, 200, Qt.KeepAspectRatio, Qt.FastTransformation)
 
+        # Set the image to the label and center it
         self.image_label.setPixmap(self.pixmap)
         self.image_label.setAlignment(Qt.AlignCenter)
 
@@ -179,6 +184,11 @@ class MainWindow(QMainWindow):
             self.download_status.setStyleSheet("color: red")
 
     def set_path(self):
+        """
+        This method is used to set the download path for the YouTube videos.
+        It opens a file dialog for the user to select an existing directory.
+        After the path is selected, it updates the path label with the new path.
+        """
         self.path = QFileDialog.getExistingDirectory(self, "Select Directory")
         self.label_path()
 
@@ -226,9 +236,17 @@ class MainWindow(QMainWindow):
             return False
 
     def open_profile(self):
+        """
+        This method is used to open the GitHub profile of the developer in the default web browser.
+        It does not take any parameters and does not return any value.
+        """
         webbrowser.open('https://github.com/JuanSKr')
 
     def open_repository(self):
+        """
+        This method is used to open the GitHub repository of the YouTube Downloader project in the default web browser.
+        It does not take any parameters and does not return any value.
+        """
         webbrowser.open('https://github.com/JuanSKr/yt-video-downloader')
 
 
