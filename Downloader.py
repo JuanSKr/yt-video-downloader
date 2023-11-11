@@ -7,15 +7,39 @@ class Downloader:
     def __init__(self):
         super().__init__()
 
-    def download_video(self, url_video, destino):
+    def download_video(self, url_video, destination):
+        """
+        Downloads a YouTube video at the highest available resolution.
+
+        This method takes a YouTube video URL and a destination path as parameters.
+        It creates a YouTube object using the provided URL, gets the stream with the highest resolution,
+        and downloads the video to the provided destination.
+
+        Parameters:
+        url_video (str): The URL of the YouTube video to download.
+        destination (str): The path where the video will be downloaded.
+        """
         self.yt = pytube.YouTube(url_video)
         self.video = self.yt.streams.get_highest_resolution()
-        self.video.download(destino)
+        self.video.download(destination)
 
-    def download_audio(self, url_video, destino):
+    def download_audio(self, url_video, destination):
+        """
+        Downloads the audio from a YouTube video and converts it to MP3.
+
+        This method takes a YouTube video URL and a destination path as parameters.
+        It creates a YouTube object using the provided URL, gets the audio-only stream,
+        and downloads the audio to the provided destination.
+        It then converts the downloaded audio to MP3 format, saves it to the same destination,
+        and deletes the original downloaded file.
+
+        Parameters:
+        url_video (str): The URL of the YouTube video to download audio from.
+        destination (str): The path where the audio will be downloaded and the MP3 file will be saved.
+        """
         self.yt = pytube.YouTube(url_video)
         self.audio = self.yt.streams.get_audio_only()
-        audio_path = self.audio.download(destino)
+        audio_path = self.audio.download(destination)
         new_path = audio_path.replace(".mp4", ".mp3")
         audio_clip = AudioFileClip(audio_path)
         audio_clip.write_audiofile(new_path)
