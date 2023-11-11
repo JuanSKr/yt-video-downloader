@@ -194,11 +194,9 @@ class MainWindow(QMainWindow):
         This method checks if the provided path is a valid file path on Windows.
         It uses a regular expression to check if the path matches the pattern of a valid file path.
 
-        Parameters:
-        path (str): The file path to validate.
+        :param path: The path to validate.
 
-        Returns:
-        bool: True if the path is valid, False otherwise.
+        :return True if the path is valid, False otherwise.
         """
         pattern = r'^[a-zA-Z]:\\(?:[^\\/:*?"<>|\r\n]+\\)*[^\\/:*?"<>|\r\n]*$'
         if re.match(pattern, path):
@@ -213,11 +211,9 @@ class MainWindow(QMainWindow):
         This method checks if the provided URL is a valid short YouTube URL.
         It uses a regular expression to check if the URL matches the pattern of a valid short YouTube URL.
 
-        Parameters:
-        url (str): The URL to validate.
+        :param url: The URL to validate.
 
-        Returns:
-        bool: True if the URL is valid, False otherwise.
+        :return True if the URL is valid, False otherwise.
         """
         pattern = r'^https://youtu\.be/.*$'
         if re.match(pattern, url):
@@ -232,11 +228,9 @@ class MainWindow(QMainWindow):
         This method checks if the provided URL is a valid full YouTube URL.
         It uses a regular expression to check if the URL matches the pattern of a valid full YouTube URL.
 
-        Parameters:
-        url (str): The URL to validate.
+        :param url: The URL to validate.
 
-        Returns:
-        bool: True if the URL is valid, False otherwise.
+        :return True if the URL is valid, False otherwise.
         """
         pattern = r'^https://www\.youtube\.com/.*$'
         if re.match(pattern, url):
