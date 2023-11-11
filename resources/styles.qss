@@ -18,7 +18,15 @@ QPushButton#downloadVideo {
     font-family: "Spendthrift";
 }
 
-QPushButton#downloadAudio {
+QPushButton#downloadMp3 {
+    border: 1px solid #CCCCCC;
+    border-radius: 5px;
+    padding: 5px;
+    background-color: #FFFFFF;
+    font-family: "Spendthrift";
+}
+
+QPushButton#downloadWav {
     border: 1px solid #CCCCCC;
     border-radius: 5px;
     padding: 5px;
@@ -35,7 +43,17 @@ QPushButton#downloadVideo:hover {
     font-family: "Spendthrift";
 }
 
-QPushButton#downloadAudio:hover {
+
+QPushButton#downloadMp3:hover {
+    border: 1px solid #B4B4B4;
+    color: #FFFFFF;
+    border-radius: 5px;
+    padding: 5px;
+    background-color: #C4302B;
+    font-family: "Spendthrift";
+}
+
+QPushButton#downloadWav:hover {
     border: 1px solid #B4B4B4;
     color: #FFFFFF;
     border-radius: 5px;

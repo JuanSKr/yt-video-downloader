@@ -5,6 +5,9 @@ from PySide6.QtWidgets import (
 from PySide6.QtGui import QAction, QKeySequence, QPixmap
 import Downloader
 import re
+import webbrowser
+import os
+import sys
 
 
 class PopupPath(QDialog):
@@ -46,16 +49,26 @@ class MainWindow(QMainWindow):
         # Set the main component as the central widget
         self.setCentralWidget(principal_component)
 
-        barra_menus = self.menuBar()
-        menu = barra_menus.addMenu("&Settings")
+        bar = self.menuBar()
+        settings = bar.addMenu("&Settings")
+        info = bar.addMenu("&Info")
 
         # Define the menu bar actions and connect them to the functions (path)
         self.menu_path = QAction("&Set path", self)
         self.menu_path.setShortcut(QKeySequence("Ctrl+P"))
         self.menu_path.triggered.connect(self.show_popup)
 
+        profile_action = QAction('GitHub &Profile', self)
+        profile_action.triggered.connect(self.open_profile)
+
+        # Create the 'GitHub Repository' menu item
+        repo_action = QAction('GitHub &Repository', self)
+        repo_action.triggered.connect(self.open_repository)
+
         # Add the actions to the menu bar (path)
-        menu.addAction(self.menu_path)
+        settings.addAction(self.menu_path)
+        info.addAction(profile_action)
+        info.addAction(repo_action)
 
         # Define the downloader object
         self.downloader = Downloader.Downloader()
@@ -73,8 +86,12 @@ class MainWindow(QMainWindow):
         self.download_mp4.clicked.connect(self.download_video)
 
         self.download_mp3 = QPushButton("Download as MP3")
-        self.download_mp3.setObjectName("downloadAudio")
-        self.download_mp3.clicked.connect(self.download_audio)
+        self.download_mp3.setObjectName("downloadMp3")
+        self.download_mp3.clicked.connect(self.download_as_mp3)
+
+        self.download_wav = QPushButton("Download as WAV")
+        self.download_wav.setObjectName("downloadWav")
+        self.download_wav.clicked.connect(self.download_as_wav)
 
         self.defined_path = QLabel("")
         self.defined_path.setStyleSheet("font-family: Spendthrift;")
@@ -84,7 +101,8 @@ class MainWindow(QMainWindow):
         self.download_status.setStyleSheet("font-family: Spendthrift;")
 
         self.image_label = QLabel()
-        self.pixmap = QPixmap('resources/logo.png')
+        self.image_path = resource_path('resources/logo.png')
+        self.pixmap = QPixmap(self.image_path)
         self.pixmap = self.pixmap.scaled(400, 200, Qt.KeepAspectRatio, Qt.FastTransformation)
 
         self.image_label.setPixmap(self.pixmap)
@@ -95,6 +113,7 @@ class MainWindow(QMainWindow):
         layout_downloader.addRow(self.url)
         layout_downloader.addRow(self.download_mp4)
         layout_downloader.addRow(self.download_mp3)
+        layout_downloader.addRow(self.download_wav)
         layout_downloader.addRow(self.defined_path)
         layout_downloader.addRow(self.download_status)
 
@@ -127,7 +146,7 @@ class MainWindow(QMainWindow):
             self.download_status.setText("Invalid URL format")
             self.download_status.setStyleSheet("color: red")
 
-    def download_audio(self):
+    def download_as_mp3(self):
         """
         Downloads the audio from a YouTube video.
 
@@ -143,7 +162,33 @@ class MainWindow(QMainWindow):
         if self.validate_youtube_short_url(url) or self.validate_youtube_full_url(url):
             self.download_status.setText("Downloading...")
             try:
-                self.downloader.download_audio(url, self.path)
+                self.downloader.download_mp3(url, self.path)
+                self.download_status.setText("Download completed")
+                self.download_status.setStyleSheet("color: green")
+            except:
+                self.download_status.setText("Download failed")
+                self.download_status.setStyleSheet("color: red")
+        else:
+            self.download_status.setText("Invalid URL format")
+            self.download_status.setStyleSheet("color: red")
+
+    def download_as_wav(self):
+        """
+        Downloads the audio from a YouTube video.
+
+        This method retrieves the YouTube video URL from the user interface text input,
+        validates the URL, and then attempts to download the audio using the Downloader object.
+        It updates the download status on the user interface.
+
+        If the URL is valid and the download is successful, it displays "Download completed" in green.
+        If the URL is valid but the download fails, it displays "Download failed" in red.
+        If the URL is invalid, it displays "Invalid URL format" in red.
+        """
+        url = self.url.text()
+        if self.validate_youtube_short_url(url) or self.validate_youtube_full_url(url):
+            self.download_status.setText("Downloading...")
+            try:
+                self.downloader.download_wav(url, self.path)
                 self.download_status.setText("Download completed")
                 self.download_status.setStyleSheet("color: green")
             except:
@@ -238,11 +283,23 @@ class MainWindow(QMainWindow):
         else:
             return False
 
+    def open_profile(self):
+        webbrowser.open('https://github.com/JuanSKr')
+
+    def open_repository(self):
+        webbrowser.open('https://github.com/JuanSKr/yt-video-downloader')
+
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+    return os.path.join(base_path, relative_path)
+
 
 if __name__ == "__main__":
+    styles_path = resource_path('resources/styles.qss')
     app = QApplication([])
     ventana = MainWindow()
     ventana.show()
-    with open("resources/styles.qss", "r") as style:
+    with open(styles_path, "r") as style:
         app.setStyleSheet(style.read())
     app.exec()
