@@ -30,7 +30,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("YouTube Downloader")
-        self.resize(800, 300)
+        self.resize(500, 300)
 
         # Define the layout of the main window
         layout_vertical = QVBoxLayout()
@@ -41,6 +41,7 @@ class MainWindow(QMainWindow):
         principal_component = QWidget()
         # Set the layout of the main component
         principal_component.setLayout(layout_vertical)
+        principal_component.setObjectName("principalComponent")
 
         # Set the main component as the central widget
         self.setCentralWidget(principal_component)
@@ -52,7 +53,6 @@ class MainWindow(QMainWindow):
         self.menu_path = QAction("&Set path", self)
         self.menu_path.setShortcut(QKeySequence("Ctrl+P"))
         self.menu_path.triggered.connect(self.show_popup)
-
 
         # Add the actions to the menu bar (path)
         menu.addAction(self.menu_path)
@@ -77,9 +77,11 @@ class MainWindow(QMainWindow):
         self.download_mp3.clicked.connect(self.download_audio)
 
         self.defined_path = QLabel("")
+        self.defined_path.setStyleSheet("font-family: Spendthrift;")
         self.label_path()
 
         self.download_status = QLabel("")
+        self.download_status.setStyleSheet("font-family: Spendthrift;")
 
         self.image_label = QLabel()
         self.pixmap = QPixmap('resources/logo.png')
@@ -247,4 +249,6 @@ if __name__ == "__main__":
     app = QApplication([])
     ventana = MainWindow()
     ventana.show()
+    with open("resources/styles.qss", "r") as style:
+        app.setStyleSheet(style.read())
     app.exec()
