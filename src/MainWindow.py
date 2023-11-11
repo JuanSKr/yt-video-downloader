@@ -1,6 +1,6 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
-    QApplication, QMainWindow, QVBoxLayout, QFormLayout, QPushButton, QLabel, QWidget, QDialog
+    QApplication, QMainWindow, QVBoxLayout, QFormLayout, QPushButton, QLabel, QWidget
 )
 from PySide6.QtGui import QAction, QKeySequence, QPixmap
 import Downloader
@@ -85,7 +85,7 @@ class MainWindow(QMainWindow):
         self.download_status.setStyleSheet("font-family: Spendthrift;")
 
         self.image_label = QLabel()
-        self.image_path = resource_path('resources/logo.png')
+        self.image_path = resource_path('../resources/logo.png')
         self.pixmap = QPixmap(self.image_path)
         self.pixmap = self.pixmap.scaled(400, 200, Qt.KeepAspectRatio, Qt.FastTransformation)
 
@@ -206,7 +206,7 @@ class MainWindow(QMainWindow):
             self.label_path()
             self.dialog.close()
         else:
-            print("Invalid path format.")
+            self.dialog.lineEdit.setText("Invalid path format.")
 
     def label_path(self):
         """
@@ -281,7 +281,7 @@ def resource_path(relative_path):
 
 
 if __name__ == "__main__":
-    styles_path = resource_path('resources/styles.qss')
+    styles_path = resource_path('../resources/styles.qss')
     app = QApplication([])
     ventana = MainWindow()
     ventana.show()
