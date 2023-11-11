@@ -1,5 +1,6 @@
-from PySide6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QFormLayout, QLineEdit, QPushButton, QLabel, \
-    QComboBox, QHBoxLayout, QWidget, QDialog
+from PySide6.QtWidgets import (
+    QApplication, QMainWindow, QVBoxLayout, QFormLayout, QLineEdit, QPushButton, QLabel, QWidget, QDialog
+)
 from PySide6.QtGui import QAction, QKeySequence
 import Downloader
 import re
@@ -57,7 +58,7 @@ class MainWindow(QMainWindow):
 
         self.download_mp4 = QPushButton("Download as MP4")
         self.download_mp4.setObjectName("downloadMp4")
-        self.download_mp4.clicked.connect(self.print_path)
+        self.download_mp4.clicked.connect(self.download_video)
 
         self.download_mp3 = QPushButton("Download as MP3")
         self.download_mp3.setObjectName("downloadMp3")
@@ -66,16 +67,30 @@ class MainWindow(QMainWindow):
         self.defined_path = QLabel("")
         self.label_path()
 
+        self.download_status = QLabel("")
+
         layout_downloader.addRow(self.url)
         layout_downloader.addRow(self.download_mp4)
         layout_downloader.addRow(self.download_mp3)
         layout_downloader.addRow(self.defined_path)
+        layout_downloader.addRow(self.download_status)
 
         layout_vertical.addLayout(layout_downloader)
 
     def download_video(self):
         url = self.url.text()
-        self.downloader.download_video(url, self.path)
+        if self.validate_youtube_short_url(url) or self.validate_youtube_full_url(url):
+            self.download_status.setText("Downloading...")
+            try:
+                self.downloader.download_video(url, self.path)
+                self.download_status.setText("Download completed")
+                self.download_status.setStyleSheet("color: green")
+            except:
+                self.download_status.setText("Download failed")
+                self.download_status.setStyleSheet("color: red")
+        else:
+            self.download_status.setText("Invalid URL format")
+            self.download_status.setStyleSheet("color: red")
 
     def show_popup(self):
         self.dialog = PopupPath(self)
@@ -99,6 +114,20 @@ class MainWindow(QMainWindow):
     def validate_path(self, path):
         pattern = r'^[a-zA-Z]:\\(?:[^\\/:*?"<>|\r\n]+\\)*[^\\/:*?"<>|\r\n]*$'
         if re.match(pattern, path):
+            return True
+        else:
+            return False
+
+    def validate_youtube_short_url(self, url):
+        pattern = r'^https://youtu\.be/.*$'
+        if re.match(pattern, url):
+            return True
+        else:
+            return False
+
+    def validate_youtube_full_url(self, url):
+        pattern = r'^https://www\.youtube\.com/.*$'
+        if re.match(pattern, url):
             return True
         else:
             return False
