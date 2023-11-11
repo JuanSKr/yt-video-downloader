@@ -1,7 +1,8 @@
+from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
     QApplication, QMainWindow, QVBoxLayout, QFormLayout, QLineEdit, QPushButton, QLabel, QWidget, QDialog
 )
-from PySide6.QtGui import QAction, QKeySequence
+from PySide6.QtGui import QAction, QKeySequence, QPixmap
 import Downloader
 import re
 
@@ -29,7 +30,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("YouTube Downloader")
-        self.resize(800, 100)
+        self.resize(800, 300)
 
         # Define the layout of the main window
         layout_vertical = QVBoxLayout()
@@ -80,7 +81,15 @@ class MainWindow(QMainWindow):
 
         self.download_status = QLabel("")
 
+        self.image_label = QLabel()
+        self.pixmap = QPixmap('resources/logo.png')
+        self.pixmap = self.pixmap.scaled(400, 200, Qt.KeepAspectRatio, Qt.FastTransformation)
+
+        self.image_label.setPixmap(self.pixmap)
+        self.image_label.setAlignment(Qt.AlignCenter)
+
         # Add the components to the layout
+        layout_downloader.addWidget(self.image_label)
         layout_downloader.addRow(self.url)
         layout_downloader.addRow(self.download_mp4)
         layout_downloader.addRow(self.download_mp3)
