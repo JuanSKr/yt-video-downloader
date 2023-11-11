@@ -4,6 +4,7 @@ from PySide6.QtWidgets import (
 from PySide6.QtGui import QAction, QKeySequence
 import Downloader
 import re
+import gettext
 
 
 class PopupPath(QDialog):
@@ -29,8 +30,9 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("YouTube Downloader")
-        self.resize(800, 420)
+        self.resize(800, 100)
 
+        
         layout_vertical = QVBoxLayout()
         layout_downloader = QFormLayout()
 
@@ -42,11 +44,20 @@ class MainWindow(QMainWindow):
         barra_menus = self.menuBar()
         menu = barra_menus.addMenu("&Settings")
 
-        accion = QAction("&Set path", self)
-        accion.setShortcut(QKeySequence("Ctrl+P"))
-        accion.triggered.connect(self.show_popup)
+        self.menu_path = QAction("&Set path", self)
+        self.menu_path.setShortcut(QKeySequence("Ctrl+P"))
+        self.menu_path.triggered.connect(self.show_popup)
 
-        menu.addAction(accion)
+        self.set_language = QAction("&Language", self)
+        self.set_language.setShortcut(QKeySequence("Ctrl+L"))
+        self.set_language.triggered.connect(self.change_language)
+
+        menu.addAction(self.menu_path)
+        menu.addAction(self.set_language)
+
+        self.language = 'en'
+        self.translator = gettext.translation('base', localedir='locales', languages=[self.language], fallback=True)
+        self.translator.install()
 
         self.downloader = Downloader.Downloader()
 
@@ -57,12 +68,12 @@ class MainWindow(QMainWindow):
         self.url.setObjectName("url")
 
         self.download_mp4 = QPushButton("Download as MP4")
-        self.download_mp4.setObjectName("downloadMp4")
+        self.download_mp4.setObjectName("downloadVideo")
         self.download_mp4.clicked.connect(self.download_video)
 
         self.download_mp3 = QPushButton("Download as MP3")
-        self.download_mp3.setObjectName("downloadMp3")
-        self.download_mp3.clicked.connect(self.print_path)
+        self.download_mp3.setObjectName("downloadAudio")
+        self.download_mp3.clicked.connect(self.download_audio)
 
         self.defined_path = QLabel("")
         self.label_path()
@@ -83,6 +94,21 @@ class MainWindow(QMainWindow):
             self.download_status.setText("Downloading...")
             try:
                 self.downloader.download_video(url, self.path)
+                self.download_status.setText("Download completed")
+                self.download_status.setStyleSheet("color: green")
+            except:
+                self.download_status.setText("Download failed")
+                self.download_status.setStyleSheet("color: red")
+        else:
+            self.download_status.setText("Invalid URL format")
+            self.download_status.setStyleSheet("color: red")
+
+    def download_audio(self):
+        url = self.url.text()
+        if self.validate_youtube_short_url(url) or self.validate_youtube_full_url(url):
+            self.download_status.setText("Downloading...")
+            try:
+                self.downloader.download_audio(url, self.path)
                 self.download_status.setText("Download completed")
                 self.download_status.setStyleSheet("color: green")
             except:
@@ -131,6 +157,31 @@ class MainWindow(QMainWindow):
             return True
         else:
             return False
+
+    def change_language(self):
+        if self.language == 'en':
+            self.language = 'es'
+        else:
+            self.language = 'en'
+        self.translator = gettext.translation('base', localedir='locales', languages=[self.language], fallback=True)
+        self.translator.install()
+        self.update_ui()
+
+    def update_ui(self):
+        if self.language == 'en':
+            self.setWindowTitle("YouTube Downloader")
+            self.download_mp4.setText("Download as MP4")
+            self.download_mp3.setText("Download as MP3")
+            self.download_status.setText("")
+            self.defined_path.setText(f"Current Path: {self.path}")
+            self.url.setPlaceholderText("Enter the URL to download")
+        else:
+            self.setWindowTitle("Descargador de vídeos de YouTube")
+            self.download_mp4.setText("Descargar como MP4")
+            self.download_mp3.setText("Descargar como MP3")
+            self.download_status.setText("")
+            self.defined_path.setText(f"Ruta actual: {self.path}")
+            self.url.setPlaceholderText("Ingrese la URL a descargar")
 
 
 if __name__ == "__main__":

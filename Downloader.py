@@ -1,4 +1,6 @@
 import pytube
+from moviepy.editor import AudioFileClip
+import os
 
 
 class Downloader:
@@ -7,13 +9,15 @@ class Downloader:
 
     def download_video(self, url_video, destino):
         self.yt = pytube.YouTube(url_video)
-        self.video = self.yt.streams.get_by_resolution(resolution='720p')
+        self.video = self.yt.streams.get_highest_resolution()
         self.video.download(destino)
-        print("Download completed")
 
-
-if __name__ == '__main__':
-    url_video = input("Enter the URL of the video: ")
-    destino = input("Enter the path where you want to save the video: ")
-    downloader = Downloader()
-    downloader.download_video(url_video, destino)
+    def download_audio(self, url_video, destino):
+        self.yt = pytube.YouTube(url_video)
+        self.audio = self.yt.streams.get_audio_only()
+        audio_path = self.audio.download(destino)
+        new_path = audio_path.replace(".mp4", ".mp3")
+        audio_clip = AudioFileClip(audio_path)
+        audio_clip.write_audiofile(new_path)
+        audio_clip.close()
+        os.remove(audio_path)
