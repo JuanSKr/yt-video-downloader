@@ -1,6 +1,6 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
-    QApplication, QMainWindow, QVBoxLayout, QFormLayout, QLineEdit, QPushButton, QLabel, QWidget, QDialog
+    QApplication, QMainWindow, QVBoxLayout, QFormLayout, QPushButton, QLabel, QWidget, QDialog
 )
 from PySide6.QtGui import QAction, QKeySequence, QPixmap
 import Downloader
@@ -8,6 +8,8 @@ import re
 import webbrowser
 import os
 import sys
+
+from CustomLineEdit import CustomLineEdit
 
 
 class PopupPath(QDialog):
@@ -19,14 +21,18 @@ class PopupPath(QDialog):
         self.layout = QVBoxLayout()
         self.setLayout(self.layout)
 
-        self.lineEdit = QLineEdit()
+        self.lineEdit = CustomLineEdit()
         self.lineEdit.setPlaceholderText("Enter the path")
+        self.lineEdit.setObjectName("path")
 
-        self.button = QPushButton("Set path")
-        self.button.clicked.connect(mainWindow.set_path)
+        self.path_button = QPushButton("Set path")
+        self.path_button.clicked.connect(mainWindow.set_path)
+        self.path_button.setObjectName("setPath")
 
         self.layout.addWidget(self.lineEdit)
-        self.layout.addWidget(self.button)
+        self.layout.addWidget(self.path_button)
+
+
 
 
 class MainWindow(QMainWindow):
@@ -77,7 +83,7 @@ class MainWindow(QMainWindow):
         self.path = "Empty"
 
         # Define the components of the downloader (URL, Download as MP4, Download as MP3)
-        self.url = QLineEdit()
+        self.url = CustomLineEdit()
         self.url.setPlaceholderText("Enter the URL to download")
         self.url.setObjectName("url")
 
