@@ -1,16 +1,13 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
-    QApplication, QMainWindow, QVBoxLayout, QFormLayout, QPushButton, QLabel, QWidget
+    QApplication, QMainWindow, QVBoxLayout, QFormLayout, QPushButton, QLabel, QWidget, QFileDialog
 )
 from PySide6.QtGui import QAction, QKeySequence, QPixmap
 import Downloader
 import re
 import webbrowser
-import os
-import sys
 
 from CustomLineEdit import CustomLineEdit
-from PopupPath import PopupPath
 
 
 class MainWindow(QMainWindow):
@@ -40,7 +37,7 @@ class MainWindow(QMainWindow):
         # Define the menu bar actions and connect them to the functions (path)
         self.menu_path = QAction("&Set path", self)
         self.menu_path.setShortcut(QKeySequence("Ctrl+P"))
-        self.menu_path.triggered.connect(self.show_popup)
+        self.menu_path.triggered.connect(self.set_path)
 
         profile_action = QAction('GitHub &Profile', self)
         profile_action.triggered.connect(self.open_profile)
@@ -58,7 +55,7 @@ class MainWindow(QMainWindow):
         self.downloader = Downloader.Downloader()
 
         # Define the path to Empty
-        self.path = "Empty"
+        self.path = "Undefined"
 
         # Define the components of the downloader (URL, Download as MP4, Download as MP3)
         self.url = CustomLineEdit()
@@ -85,8 +82,7 @@ class MainWindow(QMainWindow):
         self.download_status.setStyleSheet("font-family: Spendthrift;")
 
         self.image_label = QLabel()
-        self.image_path = resource_path('../resources/logo.png')
-        self.pixmap = QPixmap(self.image_path)
+        self.pixmap = QPixmap("../resources/logo.png")
         self.pixmap = self.pixmap.scaled(400, 200, Qt.KeepAspectRatio, Qt.FastTransformation)
 
         self.image_label.setPixmap(self.pixmap)
@@ -182,31 +178,9 @@ class MainWindow(QMainWindow):
             self.download_status.setText("Invalid URL format")
             self.download_status.setStyleSheet("color: red")
 
-    def show_popup(self):
-        """
-        Displays a popup for setting the download path.
-
-        This method creates a new instance of the PopupPath class, passing the current instance of the MainWindow class.
-        It then displays the popup to the user.
-        """
-        self.dialog = PopupPath(self)
-        self.dialog.show()
-
     def set_path(self):
-        """
-        Sets the download path.
-
-        This method retrieves the path from the dialog's text input,
-        validates the path, and if valid, sets the path, updates the path label, and closes the dialog.
-        If the path is invalid, it prints "Invalid path format." to the console.
-        """
-        path = self.dialog.lineEdit.text()
-        if self.validate_path(path):
-            self.path = path
-            self.label_path()
-            self.dialog.close()
-        else:
-            self.dialog.lineEdit.setText("Invalid path format.")
+        self.path = QFileDialog.getExistingDirectory(self, "Select Directory")
+        self.label_path()
 
     def label_path(self):
         """
@@ -214,24 +188,8 @@ class MainWindow(QMainWindow):
 
         This method sets the text of the 'defined_path' label to display the current download path.
         """
-        self.defined_path.setText(f"Current Path: {self.path}")
-
-    def validate_path(self, path):
-        """
-        Validates a file path.
-
-        This method checks if the provided path is a valid file path on Windows.
-        It uses a regular expression to check if the path matches the pattern of a valid file path.
-
-        :param path: The path to validate.
-
-        :return True if the path is valid, False otherwise.
-        """
-        pattern = r'^[a-zA-Z]:\\(?:[^\\/:*?"<>|\r\n]+\\)*[^\\/:*?"<>|\r\n]*$'
-        if re.match(pattern, path):
-            return True
-        else:
-            return False
+        if self.path is not None:
+            self.defined_path.setText(f"Current Path: {self.path}")
 
     def validate_youtube_short_url(self, url):
         """
@@ -274,17 +232,10 @@ class MainWindow(QMainWindow):
         webbrowser.open('https://github.com/JuanSKr/yt-video-downloader')
 
 
-def resource_path(relative_path):
-    """ Get absolute path to resource, works for dev and for PyInstaller """
-    base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
-    return os.path.join(base_path, relative_path)
-
-
 if __name__ == "__main__":
-    styles_path = resource_path('../resources/styles.qss')
     app = QApplication([])
     ventana = MainWindow()
     ventana.show()
-    with open(styles_path, "r") as style:
+    with open("../resources/styles.qss", "r") as style:
         app.setStyleSheet(style.read())
     app.exec()
