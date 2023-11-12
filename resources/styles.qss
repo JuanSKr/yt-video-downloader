@@ -1,89 +1,108 @@
 QWidget#principalComponent {
-    background-color: #FFFFFF;
+    background-color: #941b81;
 }
 
 CustomLineEdit#url {
-    border: 1px solid #CCCCCC;
-    border-radius: 5px;
+    border: 1px solid #684292;
+    color: #FFFFFF;
+    border-radius: 10px;
     padding: 5px;
-    background-color: #FFFFFF;
+    background-color: #684292;
     font-family: "Spendthrift";
 }
 
-CustomLineEdit#path {
-    border: 1px solid #CCCCCC;
-    border-radius: 5px;
-    padding: 5px;
-    background-color: #FFFFFF;
+QMenu {
+    background-color: #941b81;
+    color: #FFFFFF;
+    border-radius: 10px;
+}
+
+QMenuBar#menuBar {
+    background-color: #941b81;
+    color: #FFFFFF;
     font-family: "Spendthrift";
+}
+
+QMenuBar#menuBar::item {
+    background-color: #941b81;
+    color: #FFFFFF;
+}
+
+QMenuBar#menuBar::item:selected {
+    background-color: #684292;
+    color: #FFFFFF;
+}
+
+QMenuBar#menuBar::item:hover {
+    background-color: #C4302B;
+    color: #FFFFFF;
+}
+
+QMenuBar::item {
+    background-color: #941b81;
+    color: #FFFFFF;
+}
+QMenuBar::item:selected {
+    background-color: rgba(104, 66, 146, 0.7); /* 70% opaque */
+    color: #FFFFFF;
 }
 
 QPushButton#downloadVideo {
-    border: 1px solid #CCCCCC;
-    border-radius: 5px;
+    border: 1px solid #e33e70;
+    border-radius: 10px;
     padding: 5px;
-    background-color: #FFFFFF;
+    background-color: #e33e70;
+    color: #FFFFFF;
     font-family: "Spendthrift";
-}
-
-QPushButton#setPath {
-    border: 1px solid #CCCCCC;
-    border-radius: 5px;
-    padding: 5px;
-    background-color: #FFFFFF;
-    font-family: "Spendthrift";
-}
-
-QPushButton#downloadMp3 {
-    border: 1px solid #CCCCCC;
-    border-radius: 5px;
-    padding: 5px;
-    background-color: #FFFFFF;
-    font-family: "Spendthrift";
-}
-
-QPushButton#downloadWav {
-    border: 1px solid #CCCCCC;
-    border-radius: 5px;
-    padding: 5px;
-    background-color: #FFFFFF;
-    font-family: "Spendthrift";
+    font-weight: bold;
 }
 
 QPushButton#downloadVideo:hover {
     border: 1px solid #B4B4B4;
     color: #FFFFFF;
-    border-radius: 5px;
+    border-radius: 10px;
     padding: 5px;
     background-color: #C4302B;
     font-family: "Spendthrift";
+    font-weight: bold;
 }
 
-QPushButton#setPath:hover {
-    border: 1px solid #B4B4B4;
+QPushButton#downloadMp3 {
+    border: 1px solid #b04a96;
     color: #FFFFFF;
-    border-radius: 5px;
+    border-radius: 10px;
     padding: 5px;
-    background-color: #C4302B;
+    background-color: #b04a96;
     font-family: "Spendthrift";
+    font-weight: bold;
 }
-
 
 QPushButton#downloadMp3:hover {
     border: 1px solid #B4B4B4;
     color: #FFFFFF;
-    border-radius: 5px;
+    border-radius: 10px;
     padding: 5px;
     background-color: #C4302B;
     font-family: "Spendthrift";
+    font-weight: bold;
+}
+
+QPushButton#downloadWav {
+    border: 1px solid #a23f4c;
+    color: #FFFFFF;
+    border-radius: 10px;
+    padding: 5px;
+    background-color: #a23f4c;
+    font-family: "Spendthrift";
+    font-weight: bold;
 }
 
 QPushButton#downloadWav:hover {
     border: 1px solid #B4B4B4;
     color: #FFFFFF;
-    border-radius: 5px;
+    border-radius: 10px;
     padding: 5px;
     background-color: #C4302B;
     font-family: "Spendthrift";
+    font-weight:bold;
 }
-

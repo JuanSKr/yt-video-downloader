@@ -15,13 +15,13 @@ class CustomLineEdit(QLineEdit):
             menu.addAction(action)
         menu.setStyleSheet("""
             QMenu {
-                background-color: #4B4B4B;
+                background-color: #684292;
                 color: #FFFFFF;
                 border: 1px solid #555;
                 font-family: "Spendthrift";
             }
             QMenu::item:selected {
-                background-color: #C4302B;
+                background-color: #941b81;
             }
         """)
         menu.exec_(event.globalPos())

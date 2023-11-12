@@ -31,8 +31,12 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(principal_component)
 
         bar = self.menuBar()
+        bar.setObjectName("menuBar")
+        bar.setStyleSheet("font-family: Spendthrift; color: #FFFFFF; font-weight: bold;")
         settings = bar.addMenu("&Settings")
+        settings.setStyleSheet("font-family: Spendthrift; color: #FFFFFF; font-weight: bold;")
         info = bar.addMenu("&Info")
+        info.setStyleSheet("font-family: Spendthrift; color: #FFFFFF; font-weight: bold;")
 
         # Define the menu bar actions and connect them to the functions (path)
         self.menu_path = QAction("&Set path", self)
@@ -77,12 +81,11 @@ class MainWindow(QMainWindow):
 
         # Define the path label
         self.defined_path = QLabel("")
-        self.defined_path.setStyleSheet("font-family: Spendthrift;")
+        self.defined_path.setStyleSheet("font-family: Spendthrift; color: #FFFFFF; font-weight: bold;")
         self.label_path()
 
         # Define the download status label
         self.download_status = QLabel("")
-        self.download_status.setStyleSheet("font-family: Spendthrift;")
 
         # Define the image label and the image to display
         self.image_label = QLabel()
@@ -119,17 +122,16 @@ class MainWindow(QMainWindow):
         """
         url = self.url.text()
         if self.validate_youtube_short_url(url) or self.validate_youtube_full_url(url):
-            self.download_status.setText("Downloading...")
             try:
                 self.downloader.download_video(url, self.path)
                 self.download_status.setText("Download completed")
-                self.download_status.setStyleSheet("color: green")
+                self.download_status.setStyleSheet("font-family: Spendthrift; font-weight: bold; color: #4dff4d")
             except:
                 self.download_status.setText("Download failed")
-                self.download_status.setStyleSheet("color: red")
+                self.download_status.setStyleSheet("font-family: Spendthrift; font-weight: bold; color: #ff8000")
         else:
             self.download_status.setText("Invalid URL format")
-            self.download_status.setStyleSheet("color: red")
+            self.download_status.setStyleSheet("font-family: Spendthrift; font-weight: bold; color: #ff8000")
 
     def download_as_mp3(self):
         """
@@ -145,17 +147,16 @@ class MainWindow(QMainWindow):
         """
         url = self.url.text()
         if self.validate_youtube_short_url(url) or self.validate_youtube_full_url(url):
-            self.download_status.setText("Downloading...")
             try:
                 self.downloader.download_mp3(url, self.path)
                 self.download_status.setText("Download completed")
-                self.download_status.setStyleSheet("color: green")
+                self.download_status.setStyleSheet("font-family: Spendthrift; font-weight: bold; color: #4dff4d")
             except:
                 self.download_status.setText("Download failed")
-                self.download_status.setStyleSheet("color: red")
+                self.download_status.setStyleSheet("font-family: Spendthrift; font-weight: bold; color: #ff8000")
         else:
             self.download_status.setText("Invalid URL format")
-            self.download_status.setStyleSheet("color: red")
+            self.download_status.setStyleSheet("font-family: Spendthrift; font-weight: bold; color: #ff8000")
 
     def download_as_wav(self):
         """
@@ -171,17 +172,16 @@ class MainWindow(QMainWindow):
         """
         url = self.url.text()
         if self.validate_youtube_short_url(url) or self.validate_youtube_full_url(url):
-            self.download_status.setText("Downloading...")
             try:
                 self.downloader.download_wav(url, self.path)
                 self.download_status.setText("Download completed")
-                self.download_status.setStyleSheet("color: green")
+                self.download_status.setStyleSheet("font-family: Spendthrift; font-weight: bold; color: #4dff4d")
             except:
                 self.download_status.setText("Download failed")
-                self.download_status.setStyleSheet("color: red")
+                self.download_status.setStyleSheet("font-family: Spendthrift; font-weight: bold; color: #ff8000")
         else:
             self.download_status.setText("Invalid URL format")
-            self.download_status.setStyleSheet("color: red")
+            self.download_status.setStyleSheet("font-family: Spendthrift; font-weight: bold; color: #ff8000")
 
     def set_path(self):
         """
