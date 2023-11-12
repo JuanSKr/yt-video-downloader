@@ -14,7 +14,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("YouTube Downloader")
-        self.resize(500, 300)
+        self.setFixedSize(520, 330)
 
         # Define the layout of the main window
         layout_vertical = QVBoxLayout()
@@ -189,7 +189,7 @@ class MainWindow(QMainWindow):
         It opens a file dialog for the user to select an existing directory.
         After the path is selected, it updates the path label with the new path.
         """
-        self.path = QFileDialog.getExistingDirectory(self, "Select Directory")
+        self.path = QFileDialog.getExistingDirectory(self, "Select a directory")
         self.label_path()
 
     def label_path(self):
